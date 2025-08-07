@@ -1,0 +1,24 @@
+# Next.js (Node.js)
+node_modules/
+.next/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+
+# Spring Boot (Java/Maven/Gradle)
+target/
+build/
+*.log
+*.class
+*.jar
+*.war
+*.iml
+
+# Hệ điều hành & IDE
+.DS_Store
+.idea/
+.vscode/
+
+uploads/
+

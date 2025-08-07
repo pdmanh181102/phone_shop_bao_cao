@@ -1,0 +1,79 @@
+version: "3.8"
+
+services:
+  # admin-frontend:
+  #   image: phungducmanh666/phone_shop_admindashboard:0.0.0
+  #   container_name: frontend-admin
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - PHONE_SHOP_SERVER_HOST=http://localhost:8080
+  #     - IMAGE_SERVER_HOST=http://localhost:8000
+  #     - ZALO_PAY_REDIRECT_URL=http://localhost:3000
+  #   depends_on:
+  #     - backend-main
+  #     - backend-image
+  #   networks:
+  #     - app-network
+
+  # client-frontend:
+  #   image: phungducmanh666/phone_shop_clientapp:0.0.0
+  #   container_name: frontend-client
+  #   ports:
+  #     - "4000:4000"
+  #   environment:
+  #     - PHONE_SHOP_SERVER_HOST=http://localhost:8080
+  #     - IMAGE_SERVER_HOST=http://localhost:8000
+  #     - ZALO_PAY_REDIRECT_URL=http://localhost:4000
+  #   depends_on:
+  #     - backend-main
+  #     - backend-image
+  #   networks:
+  #     - app-network
+
+
+  # backend-main:
+  #   image: phungducmanh666/phone_shop_main_server:0.0.0
+  #   container_name: backend-main
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - database
+  #   environment:
+  #     - DB_HOST=sqlserver-db
+  #     - DB_PORT=1433
+  #     - DB_NAME=phone_shop_server
+  #     - DB_USERNAME=sa
+  #     - DB_PASSWORD=YourStrong!Passw0rd
+  #   networks:
+  #     - app-network
+
+  # backend-image:
+  #   image: phungducmanh666/phone_shop_image_server:0.0.0
+  #   container_name: backend-image
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - ./uploads:/app/uploads
+  #   networks:
+  #     - app-network
+
+
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver-db
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+    volumes:
+      - mssql_data:/var/opt/mssql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  mssql_data:
