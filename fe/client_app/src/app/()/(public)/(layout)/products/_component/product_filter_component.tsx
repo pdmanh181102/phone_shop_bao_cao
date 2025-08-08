@@ -6,18 +6,15 @@ import { Button, Flex, Input, Spin } from "antd";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
-// interface ProductFilterComponentProps {
-//   onChange?: (
-//     search: string,
-//     brand_uids: string[],
-//     status_uids: string[]
-//   ) => void;
-// }
-// Toản sửa
-interface ProductFilterComponentForCompareProps {
-  onChange: (search: string, brand_uids: string[], status_uids: string[]) => void;
+interface ProductFilterComponentProps {
+  onChange?: (
+    search: string,
+    brand_uids: string[],
+    status_uids: string[]
+  ) => void;
 }
-const ProductFilterComponent: React.FC<ProductFilterComponentForCompareProps> = ({
+
+const ProductFilterComponent: React.FC<ProductFilterComponentProps> = ({
   onChange,
 }) => {
   const { data: brandData, isLoading: brandLoading } = useAllBrand();
@@ -38,27 +35,14 @@ const ProductFilterComponent: React.FC<ProductFilterComponentForCompareProps> = 
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  // const handleSelectBrand = (brandUid: string) => {
-  //   if (searchParams.get("brand") == brandUid) {
-  //     updateParams("brand", null);
-  //   } else {
-  //     updateParams("brand", brandUid);
-  //   }
-  // };
-  // Toản sửa 
   const handleSelectBrand = (brandUid: string) => {
-    const current = searchParams.get('brand');
-    const updated = current === brandUid ? null : brandUid;
-    updateParams('brand', updated);
+    if (searchParams.get("brand") == brandUid) {
+      updateParams("brand", null);
+    } else {
+      updateParams("brand", brandUid);
+    }
+  };
 
-    // ✅ GỌI LẠI onChange với brand mới
-    onChange(
-      searchParams.get('search') || '',
-      updated ? [updated] : [],
-      []
-    );
-
-  }
   const onSearch = (searchValue: string) => {
     updateParams("search", searchValue.trim() || null);
   };
