@@ -5,6 +5,7 @@ import ProductFilterComponent from "@/app/()/(public)/(layout)/products/_compone
 import ProductAvatarItemComponent from "@/component/product_avatar_item_component";
 import { Button, Flex, Modal, Table, TableColumnsType } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
+import ProductFilterComponentForCompare from "./product_filter_component_for_compare";
 
 interface FormProps {
   open: boolean;
@@ -12,7 +13,7 @@ interface FormProps {
   onSuccess: (selected_products: Product[]) => void;
 }
 
-interface FormData {}
+interface FormData { }
 
 interface FilterProps {
   search: string;
@@ -131,7 +132,8 @@ const AddProductDialog: React.FC<FormProps> = ({
       destroyOnHidden
     >
       <Flex vertical gap={30}>
-        <ProductFilterComponent
+        {/* Toản sửa thay ProductFilterComponent bằng ProductComponentForCompare */}
+        <ProductFilterComponentForCompare
           onChange={(
             search: string,
             brand_uids: string[],

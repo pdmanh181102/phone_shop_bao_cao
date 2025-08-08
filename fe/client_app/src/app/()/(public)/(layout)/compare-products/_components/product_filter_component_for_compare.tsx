@@ -6,7 +6,7 @@ import { Button, Flex, Input, Spin } from "antd";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
-// interface ProductFilterComponentProps {
+// interface ProductFilterComponentForCompareProps {
 //   onChange?: (
 //     search: string,
 //     brand_uids: string[],
@@ -17,9 +17,8 @@ import React, { useState } from "react";
 interface ProductFilterComponentForCompareProps {
   onChange: (search: string, brand_uids: string[], status_uids: string[]) => void;
 }
-const ProductFilterComponent: React.FC<ProductFilterComponentForCompareProps> = ({
-  onChange,
-}) => {
+
+const ProductFilterComponentForCompare: React.FC<ProductFilterComponentForCompareProps> = ({ onChange }) => {
   const { data: brandData, isLoading: brandLoading } = useAllBrand();
   const [value, setValue] = useState("");
 
@@ -37,6 +36,7 @@ const ProductFilterComponent: React.FC<ProductFilterComponentForCompareProps> = 
     params.delete("page");
     router.push(`${pathname}?${params.toString()}`);
   };
+
 
   // const handleSelectBrand = (brandUid: string) => {
   //   if (searchParams.get("brand") == brandUid) {
@@ -118,4 +118,4 @@ const ProductFilterComponent: React.FC<ProductFilterComponentForCompareProps> = 
   );
 };
 
-export default ProductFilterComponent;
+export default ProductFilterComponentForCompare;
