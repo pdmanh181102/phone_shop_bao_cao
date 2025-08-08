@@ -222,7 +222,7 @@ const ComparePage = () => {
                                     >
                                         {group.groupName}
                                     </div>
-                                    {group.attributes.map((attr) => (
+                                    {/* {group.attributes.map((attr) => (
                                         <div
                                             key={attr.name}
                                             style={{
@@ -233,6 +233,23 @@ const ComparePage = () => {
                                             }}
                                         >
                                             {attr.name}
+                                        </div>
+                                    ))} */}
+                                    {/* Toản sửa */}
+                                    {group.attributes.map((attr, index) => (
+                                        <div
+                                            key={attr.name}
+                                            style={{
+                                                height: 100,
+                                                display: 'flex',
+                                                paddingLeft: '16px',
+                                                paddingRight: '16px',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                backgroundColor: index % 2 === 0 ? '#f9f8ff' : '#F2F2F2',
+                                            }}
+                                        >
+                                            {attr.values?.map((v) => v.value).join(', ') || 'Không có giá trị'}
                                         </div>
                                     ))}
                                 </div>
@@ -316,12 +333,27 @@ const ComparePage = () => {
                                                 }}>
                                                     {group.groupName}
                                                 </div>
-                                                {group.attributes.map((attr) => (
+                                                {/* {group.attributes.map((attr) => (
                                                     <div
                                                         key={attr.name}
                                                         style={{ height: 100, display: 'flex', paddingLeft: '16px', paddingRight: '16px', alignItems: 'center', justifyContent: 'center' }}
                                                     >
                                                         {attr.values?.map((v) => v.value).join(', ') || 'Không có giá trị'}
+                                                    </div>
+                                                ))} */}
+                                                {/* Toản sửa */}
+                                                {group.attributes.map((attr, index) => (
+                                                    <div
+                                                        key={attr.name}
+                                                        style={{
+                                                            height: 100,
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center',
+                                                            backgroundColor: index % 2 === 0 ? '#f9f8ff' : '#F2F2F2',
+                                                        }}
+                                                    >
+                                                        {attr.name}
                                                     </div>
                                                 ))}
                                             </div>
