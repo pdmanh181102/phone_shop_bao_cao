@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import app.server.phone_shop.api.account_status.AccountStatusEnum;
-import app.server.phone_shop.api.accounts.AccountEntity;
 import app.server.phone_shop.api.customers.request_dto.CreateCustomerRequest;
 import app.server.phone_shop.api.customers.request_dto.UpdatePasswordResponse;
 import app.server.phone_shop.api.orders.OrderDto;
@@ -57,6 +61,10 @@ public class CustomerService {
             throw new RuntimeException("Sai mật khẩu");
         }
 
+        if (customer.getStatus() == AccountStatusEnum.DISABLE) {
+            throw new RuntimeException("Tài khoản chưa được kích hoạt hoặc đã bị khóa");
+        }
+
         return mapper.toDto(customer);
     }
 
@@ -75,6 +83,32 @@ public class CustomerService {
         return mapper.toDto(entity);
     }
 
+    public Page<CustomerDto> getAll(Integer page, Integer size, String sort) {
+        String[] sortParts = (sort != null) ? sort.split(",") : new String[] { "id" };
+        String sortBy = sortParts[0];
+        Sort.Direction direction = (sortParts.length > 1 && sortParts[1].equalsIgnoreCase("desc"))
+                ? Sort.Direction.DESC
+                : Sort.Direction.ASC;
+        Sort sortObj = Sort.by(direction, sortBy);
+
+        // Nếu page hoặc size null -> không phân trang, trả toàn bộ danh sách
+        if (page == null || size == null) {
+            List<CustomerDto> result = repository.findAll(sortObj)
+                    .stream()
+                    .map(mapper::toDto)
+                    .toList();
+            return new PageImpl<>(result); // Chuyển về Page để giữ kiểu trả về
+        }
+
+        // Có phân trang
+        page = Math.max(page, 0);
+        size = Math.max(size, 1);
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+
+        Page<CustomerEntity> customerPage = repository.findAll(pageable);
+        return customerPage.map(mapper::toDto);
+    }
+
     public List<OrderDto> getOrders(UUID uid) {
         CustomerEntity customerEntity = getEntityByUid(uid);
         if (customerEntity.getOrders() == null) {
@@ -88,6 +122,8 @@ public class CustomerService {
     public CustomerDto verifyByEmail(String email) {
         CustomerEntity customerEntity = repository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("email chưa được đăng kí!"));
+        customerEntity.setStatus(AccountStatusEnum.ACTIVE);
+        repository.save(customerEntity);
         return mapper.toDto(customerEntity);
     }
 
@@ -130,6 +166,12 @@ public class CustomerService {
     public CustomerDto updateGender(UUID uid, GenderEnum gender) {
         CustomerEntity customerEntity = getEntityByUid(uid);
         customerEntity.setGender(gender);
+        return mapper.toDto(repository.save(customerEntity));
+    }
+
+    public CustomerDto updateStatus(UUID uid, AccountStatusEnum statusEnum) {
+        CustomerEntity customerEntity = getEntityByUid(uid);
+        customerEntity.setStatus(statusEnum);
         return mapper.toDto(repository.save(customerEntity));
     }
 

@@ -33,6 +33,8 @@ public class OtpController {
     public ResponseEntity<VerifyOtpResponse> verifyOtp(@RequestBody VerifyOtpRequest request) {
         boolean valid = otpService.verifyOtp(request.getKey(), request.getOtp());
 
+        System.out.println(String.format("\n\nGMAIL: %s", request.getKey()));
+
         if (valid) {
             accountService.verifyByEmail(request.getKey()); // Giả sử key là email
             VerifyOtpResponse response = new VerifyOtpResponse(true, "OTP verified successfully.");

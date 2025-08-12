@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import app.server.phone_shop.api.account_status.AccountStatusEnum;
 import app.server.phone_shop.api.customers.request_dto.CreateCustomerRequest;
 import app.server.phone_shop.api.customers.request_dto.UpdateForgotPasswordRequest;
 import app.server.phone_shop.api.customers.request_dto.UpdatePasswordResponse;
@@ -29,6 +31,15 @@ import lombok.RequiredArgsConstructor;
 public class CustomerController {
 
     private final CustomerService service;
+
+    @GetMapping("")
+    public ResponseEntity<Page<CustomerDto>> getAll(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(defaultValue = "firstName,asc") String sort) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                service.getAll(page, size, sort));
+    }
 
     @PatchMapping("/update/password/email")
     public ResponseEntity<UpdatePasswordResponse> updatePasswordByEmail(
@@ -90,6 +101,12 @@ public class CustomerController {
     public ResponseEntity<CustomerDto> updateGender(@PathVariable UUID uid, @RequestParam GenderEnum gender) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 service.updateGender(uid, gender));
+    }
+
+    @PatchMapping("/{uid}/update/status")
+    public ResponseEntity<CustomerDto> updateStatus(@PathVariable UUID uid, @RequestParam AccountStatusEnum status) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                service.updateStatus(uid, status));
     }
 
     @PatchMapping("/{uid}/update/address")

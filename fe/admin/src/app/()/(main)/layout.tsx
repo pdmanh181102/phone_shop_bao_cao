@@ -2,18 +2,17 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 
+import { AuthStorage } from "@/uitl/auth_storage";
 import { App, Layout, Menu, MenuProps } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import { usePathname, useRouter } from "next/navigation";
 import { FaBoxOpen, FaShoppingCart, FaTag } from "react-icons/fa";
+import { FaUser } from "react-icons/fa6";
 import { IoHome } from "react-icons/io5";
 import { MdManageAccounts, MdOutlineInventory } from "react-icons/md";
 import LayoutFooterComponent from "./_component/layout_footer_components";
 import LayoutHeaderComponent from "./_component/layout_header_component";
-import { AuthStorage } from "@/uitl/auth_storage";
-import { ItemType } from "antd/es/breadcrumb/Breadcrumb";
-import { MenuItemType } from "antd/es/menu/interface";
 
 interface SiderTemplateProps {}
 
@@ -27,6 +26,7 @@ const enum MENU_KEYS {
   ACCOUNT = "5",
   INVENTORY = "6",
   ORDER = "7",
+  CUSTOMER = "8",
 
   // Submenus
   ACCOUNT_USER = "5.1",
@@ -118,6 +118,12 @@ const SiderTemplate: React.FC<SiderTemplateProps> = ({}) => {
         onClick: () => router.push("/orders"),
         icon: <FaShoppingCart />,
       },
+      {
+        key: MENU_KEYS.CUSTOMER,
+        label: "Khách hàng",
+        onClick: () => router.push("/customers"),
+        icon: <FaUser />,
+      },
     ],
     []
   );
@@ -143,6 +149,7 @@ const SiderTemplate: React.FC<SiderTemplateProps> = ({}) => {
     if (pathname.startsWith("/inventory-adjustment"))
       return MENU_KEYS.INVENTORY_ADJUST;
     if (pathname.startsWith("/orders")) return MENU_KEYS.ORDER;
+    if (pathname.startsWith("/customers")) return MENU_KEYS.CUSTOMER;
     return MENU_KEYS.ANALYSIS; // Default là Home
   }, [pathname]);
 
@@ -177,6 +184,7 @@ const SiderTemplate: React.FC<SiderTemplateProps> = ({}) => {
       const item = getMenuItems(MENU_KEYS.ORDER);
       if (item) items.push(item);
     }
+    items.push(getMenuItems(MENU_KEYS.CUSTOMER));
     return items;
   }, [router, authories]);
 
