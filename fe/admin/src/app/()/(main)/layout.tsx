@@ -184,7 +184,10 @@ const SiderTemplate: React.FC<SiderTemplateProps> = ({}) => {
       const item = getMenuItems(MENU_KEYS.ORDER);
       if (item) items.push(item);
     }
-    items.push(getMenuItems(MENU_KEYS.CUSTOMER));
+    if (authories.includes("READ_ALL_CUSTOMER")) {
+      const item = getMenuItems(MENU_KEYS.CUSTOMER);
+      if (item) items.push(item);
+    }
     return items;
   }, [router, authories]);
 

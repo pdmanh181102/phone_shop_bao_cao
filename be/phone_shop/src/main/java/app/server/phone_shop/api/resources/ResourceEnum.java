@@ -9,7 +9,8 @@ public enum ResourceEnum {
     SUPPLIER("Supplier"),
     INVENTORY("Inventory"),
     ORDER("Order"),
-    ANALYSIS("Analysis");
+    ANALYSIS("Analysis"),
+    CUSTOMER("Customter");
 
     private final String label;
 
