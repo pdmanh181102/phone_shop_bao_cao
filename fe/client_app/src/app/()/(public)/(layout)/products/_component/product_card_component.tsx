@@ -72,7 +72,9 @@ const ProductCardComponent: React.FC<ProductCardComponentProps> = ({
       cover={<ProductAvatarComponent productUid={uid} />}
     >
       <Flex vertical gap={10}>
-        <Rate defaultValue={star || 5} disabled style={{ fontSize: 14 }} />
+        {/* <Rate defaultValue={star || 5} disabled style={{ fontSize: 14 }} /> */}
+        {/* Toản sửa  */}
+        <Rate defaultValue={star || 5} disabled style={{ fontSize: 14, paddingTop: 20 }} />
         <Link
           href={`/products/${uid}`}
           className="line-clamp-2 block text-blue-500 hover:underline leading-snug min-h-[3rem]"
