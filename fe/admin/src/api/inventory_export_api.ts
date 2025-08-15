@@ -1,8 +1,10 @@
 import { axiosMainServer } from "@lib/axios";
 import { FetcherParams } from "@state/usePaginatedQuery";
+import { Customer } from "@type/customer";
 import { InventoryExport } from "@type/inventory_export";
 import { InventoryExportItem } from "@type/inventory_export_item";
 import { Page } from "@type/page";
+import { User } from "@type/user";
 import { AxiosError } from "axios";
 
 const end_point = "inventory-exports";
@@ -64,10 +66,10 @@ export class InventoryExportApi {
       throw new Error("Đã có lỗi không xác định xảy ra");
     }
   }
-  static async readByUid(brand_uid: string): Promise<InventoryExport> {
+  static async readByUid(uid: string): Promise<InventoryExport> {
     try {
       const response = await axiosMainServer.get<InventoryExport>(
-        `/${end_point}/${brand_uid}`
+        `/${end_point}/${uid}`
       );
       return response.data;
     } catch (error: unknown) {
@@ -81,6 +83,36 @@ export class InventoryExportApi {
       }
       console.error("Lỗi không xác định:", error);
       throw new Error("Đã có lỗi không xác định xảy ra");
+    }
+  }
+  static async readCustomer(uid: string): Promise<Customer> {
+    try {
+      const response = await axiosMainServer.get<Customer>(
+        `/${end_point}/${uid}/customer`
+      );
+      return response.data;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        const status = error.response?.status;
+        const message = error.response?.data?.message || error.message;
+        throw new Error(message);
+      }
+      throw error;
+    }
+  }
+  static async readStaff(uid: string): Promise<User> {
+    try {
+      const response = await axiosMainServer.get<User>(
+        `/${end_point}/${uid}/staff`
+      );
+      return response.data;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        const status = error.response?.status;
+        const message = error.response?.data?.message || error.message;
+        throw new Error(message);
+      }
+      throw error;
     }
   }
   static async create(

@@ -11,6 +11,7 @@ import { Breadcrumb, Button, Flex, Table, Tag } from "antd";
 import Link from "antd/es/typography/Link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import ImportReceiptStaffInfoComponent from "./_component/import_receipt_staff_info_component";
 import ImportSupplierInfoComponent from "./_component/import_supplier_info_component";
 
 const ImportManagePage = () => {
@@ -68,6 +69,12 @@ const ImportManagePage = () => {
             return <Tag color="blue">Đã nhận hàng</Tag>;
           }}
         />
+      ),
+    },
+    {
+      title: "Nhân viên nhập",
+      render: (_: any, record: InventoryEntry) => (
+        <ImportReceiptStaffInfoComponent importUid={record.uid} />
       ),
     },
     {

@@ -70,7 +70,7 @@ const ImportDetailPage: React.FC<ImportDetailPageProps> = ({ params }) => {
             <Descriptions.Item label="Lý do tạo phiếu">
               {data.reason}
             </Descriptions.Item>
-            <Descriptions.Item label="Nhân viên">
+            <Descriptions.Item label="Nhân viên tạo phiếu">
               <StaffComponent
                 staffUid={data.staffUid}
                 component={({ staff }) => (

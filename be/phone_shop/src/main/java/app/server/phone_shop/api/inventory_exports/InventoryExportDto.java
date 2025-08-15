@@ -13,9 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InventoryExportDto extends AuditDto {
-
     private UUID uid;
     private String reason;
     private UUID orderUid;
-
 }

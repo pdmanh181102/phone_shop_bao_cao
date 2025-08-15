@@ -15,11 +15,17 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import app.server.phone_shop.api.customers.CustomerDto;
+import app.server.phone_shop.api.customers.CustomerEntity;
+import app.server.phone_shop.api.customers.CustomerMapper;
 import app.server.phone_shop.api.inventory_entries.request_dto.CreateEntryItemDto;
 import app.server.phone_shop.api.inventory_entry_items.InventoryEntryItemEntity;
 import app.server.phone_shop.api.inventory_entry_types.InventoryEntryTypeEnum;
 import app.server.phone_shop.api.products.ProductEntity;
 import app.server.phone_shop.api.products.ProductRepository;
+import app.server.phone_shop.api.users.UserDto;
+import app.server.phone_shop.api.users.UserEntity;
+import app.server.phone_shop.api.users.UserMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
@@ -29,6 +35,8 @@ public class InventoryExportService {
 
     private final InventoryExportRepository repository;
     private final InventoryExportMapper mapper;
+    private final UserMapper userMapper;
+    private final CustomerMapper customerMapper;
     private final ProductRepository productRepository;
 
     @Transactional
@@ -78,6 +86,18 @@ public class InventoryExportService {
     public InventoryExportDto getByUid(UUID uid) {
         InventoryExportEntity entity = getEntityByUid(uid);
         return mapper.toDto(entity);
+    }
+
+    public UserDto getStaff(UUID uid) {
+        InventoryExportEntity entity = getEntityByUid(uid);
+        UserEntity userEntity = entity.getOrder().getStaff();
+        return userMapper.toDto(userEntity);
+    }
+
+    public CustomerDto getCustomer(UUID uid) {
+        InventoryExportEntity entity = getEntityByUid(uid);
+        CustomerEntity customerEntity = entity.getOrder().getCustomer();
+        return customerMapper.toDto(customerEntity);
     }
 
     public InventoryExportEntity getEntityByUid(UUID uid) {
